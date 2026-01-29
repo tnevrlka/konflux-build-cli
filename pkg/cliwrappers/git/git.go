@@ -14,6 +14,7 @@ type CliInterface interface {
 	RemoteAdd(workdir, name, url string) (string, error)
 	FetchWithRefspec(workdir, remote, refspec string, depth int) error
 	Fetch(workdir, repository string, depth int) (string, error)
+	FetchTags(workdir string) (string, error)
 	Checkout(workdir, ref string) error
 	Commit(workdir, targetBranch, remote, resultSHA string) (string, error)
 	Merge(workdir, fetchHead string) (string, error)
