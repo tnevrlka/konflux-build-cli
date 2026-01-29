@@ -31,6 +31,12 @@ func (c *GitClone) performClone() error {
 	if err := c.fetchRevision(checkoutDir); err != nil {
 		return err
 	}
+
+	// Step 4: Checkout the revision
+	l.Logger.Info("Checking out FETCH_HEAD")
+	if err := c.CliWrappers.GitCli.Checkout(checkoutDir, "FETCH_HEAD"); err != nil {
+		return fmt.Errorf("git checkout failed: %w", err)
+	}
 	return nil
 }
 
