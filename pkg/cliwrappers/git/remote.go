@@ -15,6 +15,20 @@ func (g *Cli) RemoteAdd(workdir, name, url string) (string, error) {
 	return strings.TrimSpace(stdout), nil
 }
 
+func (g *Cli) Fetch(workdir, repository string, depth int) (string, error) {
+	gitArgs := []string{"fetch", repository}
+
+	if depth > 0 {
+		gitArgs = append(gitArgs, fmt.Sprintf("--depth=%d", depth))
+	}
+
+	stdout, stderr, exitCode, err := g.Executor.ExecuteInDir(workdir, "git", gitArgs...)
+	if err != nil {
+		return "", fmt.Errorf("git fetch failed with exit code %d: %v (stderr: %s)", exitCode, err, stderr)
+	}
+	return strings.TrimSpace(stdout), nil
+}
+
 // FetchWithRefspec fetches a specific refspec from a remote with optional depth
 func (g *Cli) FetchWithRefspec(workdir, remote, refspec string, depth int) error {
 	gitArgs := []string{"fetch"}
