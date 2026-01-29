@@ -20,6 +20,12 @@ func (c *GitClone) performClone() error {
 	if err := c.CliWrappers.GitCli.Init(checkoutDir); err != nil {
 		return fmt.Errorf("git init failed: %w", err)
 	}
+
+	// Step 2: Add remote origin
+	l.Logger.Infof("Adding remote origin: %s", c.Params.Url)
+	if _, err := c.CliWrappers.GitCli.RemoteAdd(checkoutDir, "origin", c.Params.Url); err != nil {
+		return fmt.Errorf("git remote add failed: %w", err)
+	}
 	return nil
 }
 
